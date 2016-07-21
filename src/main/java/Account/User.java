@@ -15,14 +15,14 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.idNumber = idNumber;
-		dateOfBirth = generateDateOfBirthFromIdNumber();
+		dateOfBirth = generateDateOfBirth();
 	}
 	
-	private Date generateDateOfBirthFromIdNumber() {
+	private Date generateDateOfBirth() {
 		int yearOfBirth= getYearOfBirthFromIdNumber();
 		int monthOfBirth= getMonthOfBirthFromIdNumber();
 		int dayOfBirth= getDayOfBirthFromIdNumber();
-		return a(yearOfBirth, monthOfBirth, dayOfBirth);
+		return generateDateOfBirth(yearOfBirth, monthOfBirth, dayOfBirth);
 	}
 	
 	private int getYearOfBirthFromIdNumber() {
@@ -62,7 +62,7 @@ public class User {
 		return Integer.valueOf(idNumber.substring(4, 6));
 	}
 	
-	private Date a(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
+	private Date generateDateOfBirth(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			return formatter.parse(dayOfBirth + "/" + monthOfBirth + "/" + yearOfBirth);
