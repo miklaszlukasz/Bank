@@ -26,36 +26,11 @@ public class User {
 	}
 	
 	private int getYearOfBirthFromIdNumber() {
-		int monthOfBirth= Integer.valueOf(idNumber.substring(2, 4));
-		int yearOfBirth= Integer.valueOf(idNumber.substring(0, 2)) + 1900;
-		if (monthOfBirth > 80) {
-			monthOfBirth-= 80;
-			yearOfBirth-= 100;
-		} else if (monthOfBirth > 60) {
-			yearOfBirth+=300;
-			monthOfBirth-=60;
-		} else if (monthOfBirth > 40) {
-			yearOfBirth+= 200;
-			monthOfBirth-=40;
-		} else if (monthOfBirth > 20) {
-			monthOfBirth-=20;
-			yearOfBirth+= 100;
-		}
-		return yearOfBirth;
+		return Integer.valueOf(idNumber.substring(0, 2));
 	}
 	
 	private int getMonthOfBirthFromIdNumber() {
-		int monthOfBirth= Integer.valueOf(idNumber.substring(2, 4));
-		if (monthOfBirth > 80) {
-			monthOfBirth-= 80;
-		} else if (monthOfBirth > 60) {
-			monthOfBirth-=60;
-		} else if (monthOfBirth > 40) {
-			monthOfBirth-=40;
-		} else if (monthOfBirth > 20) {
-			monthOfBirth-=20;
-		}
-		return monthOfBirth;
+		return Integer.valueOf(idNumber.substring(2, 4));
 	}
 	
 	private int getDayOfBirthFromIdNumber() {
@@ -63,6 +38,20 @@ public class User {
 	}
 	
 	private Date generateDateOfBirth(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
+		if (monthOfBirth > 80) {
+			monthOfBirth-= 80;
+			yearOfBirth+= 1800;
+		} else if (monthOfBirth > 60) {
+			yearOfBirth+= 2200;
+			monthOfBirth-= 60;
+		} else if (monthOfBirth > 40) {
+			yearOfBirth+= 2100;
+			monthOfBirth-= 40;
+		} else if (monthOfBirth > 20) {
+			monthOfBirth-= 20;
+			yearOfBirth+= 2000;
+		} else if (monthOfBirth > 0)
+			yearOfBirth+= 1900;
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			return formatter.parse(dayOfBirth + "/" + monthOfBirth + "/" + yearOfBirth);
