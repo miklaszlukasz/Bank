@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import Transaction.Transfer;
+
 public class TransactionTest {
 	private double epsilon = 0.0;
 
@@ -14,8 +16,8 @@ public class TransactionTest {
 		double amount = 2000.35;
 		String comment = "test";
 		
-		Transaction transaction = new Transaction(adressee, recipient, amount, comment);
-		assertEquals(adressee, transaction.getAdressee());
+		Transfer transaction = new Transfer(adressee, recipient, amount, comment);
+		//assertEquals(adressee, transaction.getAdressee());
 		assertEquals(recipient, transaction.getRecipient());
 		assertEquals(amount, transaction.getAmount(), epsilon);
 		assertEquals(comment, transaction.getComment());		

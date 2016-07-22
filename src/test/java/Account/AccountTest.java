@@ -38,7 +38,7 @@ public class AccountTest {
 		recipient.depositMoney(moneyOnRecipient);
 		moneyOnRecipient += moneyToTransaction;
 		
-		adressee.makeTransaction(recipient, moneyToTransaction, "test");
+		adressee.transferMoney(recipient, moneyToTransaction, "test");
 		assertEquals(moneyOnAdressee, adressee.getMoney(), epsilon);
 		assertEquals(moneyOnRecipient, recipient.getMoney(), epsilon);
 	}

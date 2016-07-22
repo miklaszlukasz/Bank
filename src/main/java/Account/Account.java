@@ -5,6 +5,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import Transaction.Deposit;
+import Transaction.Transaction;
+import Transaction.Transfer;
+import Transaction.Withdraw;
+
 public class Account {
 	private String idNumber;
 	private Date creationDate;
@@ -17,10 +22,26 @@ public class Account {
 		creationDate = Calendar.getInstance().getTime();
 	}
 
-	public void makeTransaction(Account recipient, double amount, String comment) {
+	public void depositMoney(double amount) {
+		Transaction transaction = new Deposit(this, amount);
+		transactionsHistory.add(transaction);
+		this.money += amount;
+	}
+
+	public void withdrawMoney(double amount) {
+		if (money >= amount) {
+			Transaction transaction = new Withdraw(this, amount);
+			transactionsHistory.add(transaction);
+			this.money -= amount;
+		} else
+			System.out.println("Not enough money to make transaction!");
+	}
+
+	public void transferMoney(Account recipient, double amount, String comment) {
 		if (money >= amount) {
 			pourMoney(recipient, amount);
-			addTransactionToHistory(recipient, amount, comment);
+			Transfer transaction = new Transfer(this, recipient, amount, comment);
+			transactionsHistory.add(transaction);
 		} else
 			System.out.println("Not enough money to make transaction!");
 	}
@@ -28,19 +49,6 @@ public class Account {
 	private void pourMoney(Account recipient, double amount) {
 		this.withdrawMoney(amount);
 		recipient.depositMoney(amount);
-	}
-	
-	private void addTransactionToHistory(Account recipient, double amount, String comment) {
-		Transaction transaction = new Transaction(this, recipient, amount, comment);
-		transactionsHistory.add(transaction);
-	}
-	
-	public void depositMoney(double amount) {
-		this.money += amount;
-	}
-
-	public void withdrawMoney(double amount) {
-		this.money -= amount;
 	}
 
 	public String getIdNumber() {
