@@ -12,13 +12,15 @@ import Transaction.Withdraw;
 
 public class Account {
 	private String idNumber;
+	private User owner;
 	private Date creationDate;
 	private double money;
 	private List<Transaction> transactionsHistory;
 
-	public Account() {
+	public Account(User owner) {
 		super();
-		this.transactionsHistory = new ArrayList<Transaction>();
+		this.owner = owner;
+		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
 
@@ -53,6 +55,10 @@ public class Account {
 
 	public String getIdNumber() {
 		return idNumber;
+	}
+	
+	public User getOwner() {
+		return owner;
 	}
 
 	public Date getCreationDate() {

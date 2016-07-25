@@ -14,7 +14,13 @@ public class UserTest {
 		String firstName= "Jan";
 		String lastName= "Kowalski";
 		String idNumber= "76041019253";
-		User user= new User(firstName, lastName, idNumber);
+		//User user= new User(firstName, lastName, idNumber);
+		User user = new User.Builder()
+				.firstName(firstName)
+				.lastName(lastName)
+				.idNumber(idNumber)
+				.generateDateOfBirthFromIdNumber(idNumber)
+				.build();
 		assertEquals(firstName, user.getFirstName());
 		assertEquals(lastName, user.getLastName());
 		assertEquals(idNumber, user.getIdNumber());
@@ -27,7 +33,13 @@ public class UserTest {
 		String firstName= "Wiola";
 		String lastName= "Nowak";
 		String idNumber= "90920606886";
-		User user= new User(firstName, lastName, idNumber);
+		//User user= new User(firstName, lastName, idNumber);
+		User user = new User.Builder()
+				.firstName(firstName)
+				.lastName(lastName)
+				.idNumber(idNumber)
+				.generateDateOfBirthFromIdNumber(idNumber)
+				.build();
 		assertEquals(firstName, user.getFirstName());
 		assertEquals(lastName, user.getLastName());
 		assertEquals(idNumber, user.getIdNumber());
@@ -40,7 +52,13 @@ public class UserTest {
 		String firstName= "Ewa";
 		String lastName= "Rumcajs";
 		String idNumber= "90320606886";
-		User user= new User(firstName, lastName, idNumber);
+		//User user= new User(firstName, lastName, idNumber);
+		User user = new User.Builder()
+				.firstName(firstName)
+				.lastName(lastName)
+				.idNumber(idNumber)
+				.generateDateOfBirthFromIdNumber(idNumber)
+				.build();
 		assertEquals(firstName, user.getFirstName());
 		assertEquals(lastName, user.getLastName());
 		assertEquals(idNumber, user.getIdNumber());
