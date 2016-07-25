@@ -7,12 +7,19 @@ import Account.Account;
 public class Transfer extends Transaction {
 	private Account recipient;
 
-	public Transfer(Account performer, Account recipient, double amount, String comment) {
-		super();
-		type = TransactionType.TRANSFER;
-		this.performer = performer;
+	public Transfer(Account performer, Account recipient, double amount) {
+		super(TransactionType.TRANSFER, performer, amount);
 		this.recipient = recipient;
-		this.amount = amount;
+		generateComment();
+	}
+
+	public void generateComment() {
+		comment = "Transfer " + amount + " to " + recipient;
+	}
+	
+	public Transfer(Account performer, Account recipient, double amount, String comment) {
+		super(TransactionType.TRANSFER, performer, amount);
+		this.recipient = recipient;
 		this.comment = comment;
 		executionDate = Calendar.getInstance().getTime();
 	}

@@ -1,10 +1,11 @@
 package Transaction;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import Account.Account;
 
-public abstract class Transaction {
+public abstract class Transaction implements CommentGenerable {
 	TransactionType type;
 	protected long idNumber;
 	protected Account performer;
@@ -12,6 +13,13 @@ public abstract class Transaction {
 	protected double amount;
 	protected String comment;
 
+	public Transaction(TransactionType type, Account performer, double amount) {
+		this.type = type;
+		this.performer = performer;
+		this.amount = amount;
+		executionDate = Calendar.getInstance().getTime();
+	}
+	
 	public TransactionType getType() {
 		return type;
 	}

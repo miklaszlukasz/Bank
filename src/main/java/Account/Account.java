@@ -10,16 +10,15 @@ import Transaction.Transaction;
 import Transaction.Transfer;
 import Transaction.Withdraw;
 
-public class Account {
+public abstract class Account {
+	private AccountTest type;
 	private String idNumber;
-	private User owner;
 	private Date creationDate;
 	private double money;
 	private List<Transaction> transactionsHistory;
 
-	public Account(User owner) {
+	public Account() {
 		super();
-		this.owner = owner;
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
@@ -52,13 +51,13 @@ public class Account {
 		this.withdrawMoney(amount);
 		recipient.depositMoney(amount);
 	}
-
-	public String getIdNumber() {
-		return idNumber;
+	
+	public AccountTest getType() {
+		return type;
 	}
 	
-	public User getOwner() {
-		return owner;
+	public String getIdNumber() {
+		return idNumber;
 	}
 
 	public Date getCreationDate() {
