@@ -8,7 +8,7 @@ public class PersonalAccountTest {
 	private double epsilon = 0.0;
 
 	@Test
-	public void test() {
+	public void testDepositAndWithdrawMoney() {
 		Account account = new PersonalAccount();
 		double moneyOnAccount = 0.0;
 		assertEquals(moneyOnAccount, account.getMoney(), epsilon);
@@ -22,5 +22,24 @@ public class PersonalAccountTest {
 		moneyOnAccount -= monetToWithdraw;
 		account.withdrawMoney(monetToWithdraw);
 		assertEquals(moneyOnAccount, account.getMoney(), epsilon);
+	}
+	
+	@Test
+	public void testMakeTransaction() {
+		double moneyToTransaction = 333.33;
+
+		Account adressee = new PersonalAccount();
+		double moneyOnAdressee = 452.73;
+		adressee.depositMoney(moneyOnAdressee);
+		moneyOnAdressee -= moneyToTransaction;
+
+		Account recipient = new PersonalAccount();
+		double moneyOnRecipient = 23.13;
+		recipient.depositMoney(moneyOnRecipient);
+		moneyOnRecipient += moneyToTransaction;
+		
+		adressee.transferMoney(recipient, moneyToTransaction, "test");
+		assertEquals(moneyOnAdressee, adressee.getMoney(), epsilon);
+		assertEquals(moneyOnRecipient, recipient.getMoney(), epsilon);
 	}
 }

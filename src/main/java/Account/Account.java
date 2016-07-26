@@ -11,7 +11,7 @@ import Transaction.Transfer;
 import Transaction.Withdraw;
 
 public abstract class Account {
-	private AccountTest type;
+	private AccountType type;
 	private String idNumber;
 	private Date creationDate;
 	private double money;
@@ -52,7 +52,7 @@ public abstract class Account {
 		recipient.depositMoney(amount);
 	}
 	
-	public AccountTest getType() {
+	public AccountType getType() {
 		return type;
 	}
 	
