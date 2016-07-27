@@ -13,44 +13,46 @@ import Transaction.Withdraw;
 public abstract class Account {
 	private AccountType type;
 	private String idNumber;
+	private User owner;
 	private Date creationDate;
 	private double money;
 	private List<Transaction> transactionsHistory;
 
-	public Account() {
+	public Account(User owner, AccountType type) {
 		super();
+		this.owner = owner;
+		this.type = type;
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
 
 	public void depositMoney(double amount) {
-		Transaction transaction = new Deposit(this, amount);
+		Transaction transaction = new Deposit(owner, this, amount);
 		transactionsHistory.add(transaction);
-		this.money += amount;
+		money += amount;
 	}
 
 	public void withdrawMoney(double amount) {
-		if (money >= amount) {
-			Transaction transaction = new Withdraw(this, amount);
+			Transaction transaction = new Withdraw(owner, this, amount);
 			transactionsHistory.add(transaction);
-			this.money -= amount;
-		} else
-			System.out.println("Not enough money to make transaction!");
+			money -= amount;
 	}
 
 	public void transferMoney(Account recipient, double amount, String comment) {
-		if (money >= amount) {
-			pourMoney(recipient, amount);
-			Transfer transaction = new Transfer(this, recipient, amount, comment);
-			transactionsHistory.add(transaction);
-		} else
-			System.out.println("Not enough money to make transaction!");
+		Transfer transfer = new Transfer(owner, this, recipient, amount, comment);
+		withdrawMoney(amount, transfer);
+		recipient.depositMoney(amount, transfer);
+	}
+	
+	private void depositMoney(double amount, Transfer transfer) {
+		transactionsHistory.add(transfer);
+		money += amount;
 	}
 
-	private void pourMoney(Account recipient, double amount) {
-		this.withdrawMoney(amount);
-		recipient.depositMoney(amount);
-	}
+	private void withdrawMoney(double amount, Transfer transfer) {
+		transactionsHistory.add(transfer);
+		money -= amount;
+}
 	
 	public AccountType getType() {
 		return type;
@@ -58,6 +60,10 @@ public abstract class Account {
 	
 	public String getIdNumber() {
 		return idNumber;
+	}
+	
+	public User getOwner() {
+		return owner;
 	}
 
 	public Date getCreationDate() {
