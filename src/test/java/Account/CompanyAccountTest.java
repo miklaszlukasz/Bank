@@ -4,11 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class CompanyAccountTest {
+import Transaction.Transaction;
+import Transaction.TransactionType;
+import Transaction.Transfer;
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+public class CompanyAccountTest {
 
 }
