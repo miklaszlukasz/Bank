@@ -3,6 +3,6 @@ package Account;
 public class PersonalAccount extends Account {
 
 	public PersonalAccount(User owner) {
-		super(owner, AccountType.personalAccount);
+		super(owner, AccountType.PERSONAL_ACCOUNT);
 	}	
 }

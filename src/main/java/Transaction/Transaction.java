@@ -6,7 +6,7 @@ import java.util.Date;
 import Account.Account;
 import Account.User;
 
-public abstract class Transaction implements CommentGenerable {
+public abstract class Transaction {
 	TransactionType type;
 	protected long idNumber;
 	protected User performingPerson;
@@ -50,6 +50,8 @@ public abstract class Transaction implements CommentGenerable {
 	public String getComment() {
 		return comment;
 	}
+	
+	abstract String generateComment();
 	
 	@Override
 	public boolean equals(Object object) {

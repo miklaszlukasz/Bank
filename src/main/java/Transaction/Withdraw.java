@@ -7,10 +7,10 @@ public class Withdraw extends Transaction {
 	
 	public Withdraw(User performingPerson, Account performer, double amount) {
 		super(TransactionType.WITHDRAW, performingPerson, performer, amount);
-		generateComment(); 
+		comment = generateComment(); 
 	}
 
-	public void generateComment() {
-		comment = "Withdraw from account: " + amount;
+	protected String generateComment() {
+		return "Withdraw from account: " + amount;
 	}
 }

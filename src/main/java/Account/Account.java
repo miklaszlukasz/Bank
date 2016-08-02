@@ -13,9 +13,9 @@ import Transaction.Withdraw;
 public abstract class Account {
 	private AccountType type;
 	private String idNumber;
-	private User owner;
+	protected User owner;
 	private Date creationDate;
-	private double money;
+	protected double money;
 	private List<Transaction> transactionsHistory;
 
 	public Account(User owner, AccountType type) {
@@ -27,30 +27,30 @@ public abstract class Account {
 	}
 
 	public void depositMoney(double amount) {
-		Transaction transaction = new Deposit(owner, this, amount);
-		transactionsHistory.add(transaction);
+		Transaction deposit = new Deposit(owner, this, amount);
+		transactionsHistory.add(deposit);
 		money += amount;
 	}
 
 	public void withdrawMoney(double amount) {
-			Transaction transaction = new Withdraw(owner, this, amount);
-			transactionsHistory.add(transaction);
+			Transaction withdraw = new Withdraw(owner, this, amount);
+			transactionsHistory.add(withdraw);
 			money -= amount;
 	}
 
 	public void transferMoney(Account recipient, double amount, String comment) {
-		Transfer transfer = new Transfer(owner, this, recipient, amount, comment);
+		Transaction transfer = new Transfer(owner, this, recipient, amount, comment);
 		withdrawMoney(amount, transfer);
 		recipient.depositMoney(amount, transfer);
 	}
 	
-	private void depositMoney(double amount, Transfer transfer) {
-		transactionsHistory.add(transfer);
+	protected void depositMoney(double amount, Transaction transaction) {
+		transactionsHistory.add(transaction);
 		money += amount;
 	}
 
-	private void withdrawMoney(double amount, Transfer transfer) {
-		transactionsHistory.add(transfer);
+	protected void withdrawMoney(double amount, Transaction transaction) {
+		transactionsHistory.add(transaction);
 		money -= amount;
 }
 	

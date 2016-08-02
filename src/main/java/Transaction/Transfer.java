@@ -11,11 +11,11 @@ public class Transfer extends Transaction {
 	public Transfer(User performingPerson, Account performer, Account recipient, double amount) {
 		super(TransactionType.TRANSFER, performingPerson, performer, amount);
 		this.recipient = recipient;
-		generateComment();
+		comment = generateComment();
 	}
 
-	public void generateComment() {
-		comment = "Transfer " + amount + " to " + recipient;
+	protected String generateComment() {
+		return "Transfer " + amount + " to " + recipient;
 	}
 	
 	public Transfer(User performingPerson, Account performer, Account recipient, double amount, String comment) {

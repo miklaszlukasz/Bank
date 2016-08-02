@@ -89,22 +89,27 @@ public class User {
 		private Date generateDateOfBirth(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
 			final int helper = monthOfBirth / 20;
 			monthOfBirth %= 20;
-			if (helper == 4)
-				yearOfBirth += 1800;
-			else if (helper == 3)
-				yearOfBirth += 2200;
-			else if (helper == 2)
-				yearOfBirth += 2100;
-			else if (helper == 1)
-				yearOfBirth += 2000;
-			else if (helper == 0)
-				yearOfBirth += 1900;
+			yearOfBirth += countYears(helper);
+
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			try {
 				return formatter.parse(dayOfBirth + "/" + monthOfBirth + "/" + yearOfBirth);
 			} catch (ParseException e) {
 				return null;
 			}
+		}
+
+		private int countYears(int helper) {
+			if (helper == 4)
+				return 1800;
+			else if (helper == 3)
+				return 2200;
+			else if (helper == 2)
+				return 2100;
+			else if (helper == 1)
+				return 2000;
+			else
+				return 1900;
 		}
 
 		public User build() {

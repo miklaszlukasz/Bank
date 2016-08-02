@@ -7,10 +7,10 @@ public class Deposit extends Transaction {
 
 	public Deposit(User performingPerson, Account performer, double amount) {
 		super(TransactionType.DEPOSIT, performingPerson, performer, amount);
-		generateComment();
+		comment = generateComment();
 	}
 
-	public void generateComment() {
-		comment = "Deposit to account: " + amount;
+	protected String generateComment() {
+		return "Deposit to account: " + amount;
 	}
 }

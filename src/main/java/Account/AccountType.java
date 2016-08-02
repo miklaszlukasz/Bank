@@ -1,5 +1,5 @@
 package Account;
 
 public enum AccountType {
-	personalAccount, companyAccount, savingsAccount, youthAccount
+	PERSONAL_ACCOUNT, COMPANY_ACCOUNT, SAVINGS_ACCOUNT, YOUTH_ACCOUNT
 }
