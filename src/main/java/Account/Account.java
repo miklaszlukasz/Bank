@@ -25,6 +25,13 @@ public abstract class Account {
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
+	
+	public Account(AccountType type) {
+		super();
+		this.type = type;
+		transactionsHistory = new ArrayList<Transaction>();
+		creationDate = Calendar.getInstance().getTime();
+	}
 
 	public void depositMoney(double amount) {
 		Transaction deposit = new Deposit(owner, this, amount);

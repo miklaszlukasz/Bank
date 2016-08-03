@@ -1,4 +1,4 @@
-package Account;
+package User;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.junit.Test;
+
+import Account.User;
 
 public class UserTest {
 

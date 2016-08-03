@@ -2,19 +2,37 @@ package Account;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class User {
+	private String idNumber;
+	private String password;
 	private String firstName;
 	private String lastName;
-	private String idNumber;
 	private Date dateOfBirth;
+	private List<Account> accounts;
 
 	public User(Builder builder) {
+		idNumber = builder.idNumber;
+		password = builder.password;
 		firstName = builder.firstName;
 		lastName = builder.lastName;
-		idNumber = builder.idNumber;
 		dateOfBirth = builder.dateOfBirth;
+		accounts = new ArrayList<Account>();
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void addAccount(Account account) {
+		accounts.add(account);
 	}
 
 	public String getFirstName() {
@@ -25,21 +43,20 @@ public class User {
 		return lastName;
 	}
 
-	public String getIdNumber() {
-		return idNumber;
-	}
-
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
 	public static class Builder {
+		private String idNumber;
+		private String password;
 		private String firstName;
 		private String lastName;
-		private String idNumber;
 		private Date dateOfBirth;
 
-		public Builder() {
+		public Builder(String idNumber, String password) {
+			this.idNumber = idNumber;
+			this.password = password;
 		}
 
 		public Builder firstName(String firstName) {
@@ -49,11 +66,6 @@ public class User {
 
 		public Builder lastName(String lastName) {
 			this.lastName = lastName;
-			return this;
-		}
-
-		public Builder idNumber(String idNumber) {
-			this.idNumber = idNumber;
 			return this;
 		}
 

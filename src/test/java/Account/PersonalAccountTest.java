@@ -15,8 +15,11 @@ public class PersonalAccountTest extends TestCase {
 	private Transaction transcaction;
 
 	public void setUp() {
-		owner = new User.Builder().build();
-		personalAccount = new PersonalAccount(owner);
+		String randomPersonIdNumber = "22021100178";
+		String password = "test";
+		owner = new User.Builder(randomPersonIdNumber, password).build();
+		personalAccount = new PersonalAccount();
+		owner.addAccount(personalAccount);
 		assertEquals(moneyOnAccount, personalAccount.getMoney(), epsilon);
 	}
 	
@@ -57,7 +60,7 @@ public class PersonalAccountTest extends TestCase {
 		personalAccount.depositMoney(moneyOnAccount);
 		moneyOnAccount -= moneyToTransfer;
 
-		Account recipient = new PersonalAccount(owner);
+		Account recipient = new PersonalAccount();
 		double moneyOnRecipient = 23.13;
 		recipient.depositMoney(moneyOnRecipient);
 		moneyOnRecipient += moneyToTransfer;
