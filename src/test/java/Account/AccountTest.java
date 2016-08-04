@@ -25,30 +25,34 @@ public class AccountTest extends TestCase {
 	
 	@Test
 	public void testDeposit() {
-		double moneyToDeposit = 1000.63;
-		moneyOnAccount += moneyToDeposit;
-		account.depositMoney(moneyToDeposit);
-		assertEquals(moneyOnAccount, account.getMoney(), epsilon);
-		assertEquals(1, account.getTransactionsHistory().size());
+		double moneyInTransaction = 1000.63;
+		account.depositMoney(moneyInTransaction);
+		checkAccount(account, moneyInTransaction);
 		
 		transcaction = account.getTransactionsHistory().get(0);
-		assertEquals(TransactionType.DEPOSIT, transcaction.getType());
-		assertEquals(account.getIdNumber(), transcaction.getPerformer());
-		assertEquals(moneyToDeposit, transcaction.getAmount(), epsilon);	
+		checkTransaction(transcaction, TransactionType.DEPOSIT, moneyInTransaction);
 	}
 	
 	@Test
 	public void testWithdraw() {
-		double monetToWithdraw = 666.66;
-		moneyOnAccount -= monetToWithdraw;
-		account.withdrawMoney(monetToWithdraw);
-		assertEquals(moneyOnAccount, account.getMoney(), epsilon);
-		assertEquals(1, account.getTransactionsHistory().size());
+		double moneyInTransaction = 666.66;
+		account.withdrawMoney(moneyInTransaction);
+		checkAccount(account, -moneyInTransaction);
 		
 		transcaction = account.getTransactionsHistory().get(0);
-		assertEquals(TransactionType.WITHDRAW, transcaction.getType());
+		checkTransaction(transcaction, TransactionType.WITHDRAW, moneyInTransaction);
+
+	}
+	
+	private void checkAccount(Account account, double moneyInTransaction) {
+		assertEquals(moneyInTransaction, account.getMoney(), epsilon);
+		assertEquals(1, account.getTransactionsHistory().size());
+	}
+	
+	private void checkTransaction(Transaction transaction, TransactionType transactionType, double moneyInTransaction) {
+		assertEquals(transactionType, transcaction.getType());
 		assertEquals(account.getIdNumber(), transcaction.getPerformer());
-		assertEquals(monetToWithdraw, transcaction.getAmount(), epsilon);
+		assertEquals(moneyInTransaction, transcaction.getAmount(), epsilon);
 	}
 	
 	@Test
@@ -58,8 +62,8 @@ public class AccountTest extends TestCase {
 		moneyOnAccount = 452.73;
 		account.depositMoney(moneyOnAccount);
 		moneyOnAccount -= moneyToTransfer;
-
-		Account recipient = new Account();
+		User recipientOwner = new User.Builder("22021100178", "testowy").build();
+		Account recipient = new Account(recipientOwner);
 		double moneyOnRecipient = 23.13;
 		recipient.depositMoney(moneyOnRecipient);
 		moneyOnRecipient += moneyToTransfer;
@@ -68,18 +72,18 @@ public class AccountTest extends TestCase {
 		assertEquals(moneyOnAccount, account.getMoney(), epsilon);
 		assertEquals(moneyOnRecipient, recipient.getMoney(), epsilon);
 		
-		Transfer transfer = (Transfer) account.getTransactionsHistory().get(1);
-		assertEquals(TransactionType.TRANSFER, transfer.getType());
-		assertEquals(account.getIdNumber(), transfer.getPerformer());
-		assertEquals(moneyToTransfer, transfer.getAmount(), epsilon);
-		assertEquals(recipient.getIdNumber(), transfer.getRecipientIdNumber());
-		
+		Transfer transfer = (Transfer) account.getTransactionsHistory().get(1);		
+		checkTransfer(transfer, moneyToTransfer);
 		Transfer recipientTranscaction = (Transfer) recipient.getTransactionsHistory().get(1);
-		assertEquals(TransactionType.TRANSFER, recipientTranscaction.getType());
-		assertEquals(account.getIdNumber(), recipientTranscaction.getPerformer());
-		assertEquals(moneyToTransfer, recipientTranscaction.getAmount(), epsilon);
-		assertEquals(recipient.getIdNumber(), recipientTranscaction.getRecipientIdNumber());
+		checkTransfer(recipientTranscaction, moneyToTransfer);
 		
 		assertEquals(transfer, recipientTranscaction);
+	}
+	
+	private void checkTransfer(Transaction transaction, double moneyOnTransaction) {
+		assertEquals(TransactionType.TRANSFER, transaction.getType());
+		assertEquals(account.getIdNumber(), transaction.getPerformer());
+		assertEquals(moneyOnTransaction, transaction.getAmount(), epsilon);
+		assertEquals(transaction.getIdNumber(), ((Transfer) transaction).getRecipientIdNumber());
 	}
 }
