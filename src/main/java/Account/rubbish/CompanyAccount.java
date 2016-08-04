@@ -1,7 +1,10 @@
-package Account;
+package Account.rubbish;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Account.Account;
+import Account.User;
 
 public class CompanyAccount extends Account {
 	private List<User> users;

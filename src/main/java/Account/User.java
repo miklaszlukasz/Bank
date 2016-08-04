@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class User {
-	private String idNumber;
+	private String personalIdNumber;
 	private String password;
 	private String firstName;
 	private String lastName;
@@ -15,7 +15,7 @@ public class User {
 	private List<Account> accounts;
 
 	public User(Builder builder) {
-		idNumber = builder.idNumber;
+		personalIdNumber = builder.personalIdNumber;
 		password = builder.password;
 		firstName = builder.firstName;
 		lastName = builder.lastName;
@@ -24,7 +24,7 @@ public class User {
 	}
 
 	public String getIdNumber() {
-		return idNumber;
+		return personalIdNumber;
 	}
 
 	public String getPassword() {
@@ -48,14 +48,14 @@ public class User {
 	}
 
 	public static class Builder {
-		private String idNumber;
+		private String personalIdNumber;
 		private String password;
 		private String firstName;
 		private String lastName;
 		private Date dateOfBirth;
 
-		public Builder(String idNumber, String password) {
-			this.idNumber = idNumber;
+		public Builder(String personalIdNumber, String password) {
+			this.personalIdNumber = personalIdNumber;
 			this.password = password;
 		}
 
@@ -74,8 +74,8 @@ public class User {
 			return this;
 		}
 
-		public Builder generateDateOfBirthFromIdNumber(String idNumber) {
-			dateOfBirth = generateDateOfBirth(idNumber);
+		public Builder generateDateOfBirthFromIdNumber() {
+			dateOfBirth = generateDateOfBirth(personalIdNumber);
 			return this;
 		}
 

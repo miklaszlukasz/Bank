@@ -10,43 +10,38 @@ import Transaction.Transaction;
 import Transaction.Transfer;
 import Transaction.Withdraw;
 
-public abstract class Account {
-	private AccountType type;
-	private String idNumber;
+public class Account {
+	private long accountIdNumber;
 	protected User owner;
 	private Date creationDate;
 	protected double money;
 	private List<Transaction> transactionsHistory;
 
-	public Account(User owner, AccountType type) {
-		super();
+	public Account(User owner) {
 		this.owner = owner;
-		this.type = type;
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
 	
-	public Account(AccountType type) {
-		super();
-		this.type = type;
+	public Account() {
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 	}
 
 	public void depositMoney(double amount) {
-		Transaction deposit = new Deposit(owner, this, amount);
+		Transaction deposit = new Deposit(owner.getIdNumber(), this.getIdNumber(), amount);
 		transactionsHistory.add(deposit);
 		money += amount;
 	}
 
 	public void withdrawMoney(double amount) {
-			Transaction withdraw = new Withdraw(owner, this, amount);
+			Transaction withdraw = new Withdraw(owner.getIdNumber(), this.getIdNumber(), amount);
 			transactionsHistory.add(withdraw);
 			money -= amount;
 	}
 
 	public void transferMoney(Account recipient, double amount, String comment) {
-		Transaction transfer = new Transfer(owner, this, recipient, amount, comment);
+		Transaction transfer = new Transfer(owner.getIdNumber(), this.getIdNumber(), recipient.getIdNumber(), amount, comment);
 		withdrawMoney(amount, transfer);
 		recipient.depositMoney(amount, transfer);
 	}
@@ -61,12 +56,8 @@ public abstract class Account {
 		money -= amount;
 }
 	
-	public AccountType getType() {
-		return type;
-	}
-	
-	public String getIdNumber() {
-		return idNumber;
+	public long getIdNumber() {
+		return accountIdNumber;
 	}
 	
 	public User getOwner() {

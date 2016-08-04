@@ -1,4 +1,6 @@
-package Account;
+package Account.rubbish;
+
+import Account.Account;
 
 public class PersonalAccount extends Account {
 

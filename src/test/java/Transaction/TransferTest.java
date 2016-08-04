@@ -1,27 +1,37 @@
 package Transaction;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import Account.Account;
-import Account.PersonalAccount;
 import Account.User;
+import junit.framework.TestCase;
 
-public class TransferTest {
-	private double epsilon = 0.0;
+public class TransferTest extends TestCase {
+	private final double epsilon = 0.0;
+	private User user1;
+	private User user2;
+
+	public void setUp() {
+		String randomPersonIdNumber1 = "76041019253";
+		String password1 = "test";
+		user1 = new User.Builder(randomPersonIdNumber1, password1).firstName("Jan").lastName("Kowalski")
+				.generateDateOfBirthFromIdNumber().build();
+		
+		String password2 = "tset";
+		String randomPersonIdNumber2 = "78020715770";
+		user2 = new User.Builder(randomPersonIdNumber2, password2).firstName("Witold").lastName("Stonoga")
+				.generateDateOfBirthFromIdNumber().build();
+	}
 
 	@Test
 	public void testTransaction() {		
-		User adresseeOwner = new User.Builder().build();
-		User recipientOwner = new User.Builder().build();
-		Account adressee = new PersonalAccount(adresseeOwner);
-		Account recipient = new PersonalAccount(recipientOwner);
+		Account adressee = new Account(user1);
+		Account recipient = new Account(user2);
 		double amount = 2000.35;
 		String comment = "test";
 		
-		Transfer transaction = new Transfer(adresseeOwner, adressee, recipient, amount, comment);
-		assertEquals(recipient, transaction.getRecipient());
+		Transfer transaction = new Transfer(user1.getIdNumber(), adressee.getIdNumber(), recipient.getIdNumber(), amount, comment);
+		assertEquals(recipient.getIdNumber(), transaction.getRecipientIdNumber());
 		assertEquals(amount, transaction.getAmount(), epsilon);
 		assertEquals(comment, transaction.getComment());		
 	}

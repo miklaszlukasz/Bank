@@ -1,4 +1,7 @@
-package Account;
+package Account.rubbish;
+
+import Account.Account;
+import Account.User;
 
 public class YouthAccount extends Account {
 	private User supervisor;

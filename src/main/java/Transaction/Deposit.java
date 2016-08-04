@@ -1,12 +1,9 @@
 package Transaction;
 
-import Account.Account;
-import Account.User;
-
 public class Deposit extends Transaction {
 
-	public Deposit(User performingPerson, Account performer, double amount) {
-		super(TransactionType.DEPOSIT, performingPerson, performer, amount);
+	public Deposit(String performingPersonId, long performingAccountId, double amount) {
+		super(TransactionType.DEPOSIT, performingPersonId, performingAccountId, amount);
 		comment = generateComment();
 	}
 

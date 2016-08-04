@@ -1,7 +1,12 @@
-package Account;
+package Account.rubbish;
 
 import org.junit.Test;
 
+import Account.Account;
+import Account.User;
+import Account.User.Builder;
+import Account.rubbish.PersonalAccount;
+import Account.rubbish.SavingsAccount;
 import Transaction.Transaction;
 import Transaction.TransactionType;
 import Transaction.Transfer;
@@ -70,13 +75,13 @@ public class SavingsAccountTest extends TestCase {
 		assertEquals(TransactionType.TRANSFER, transfer.getType());
 		assertEquals(savingsAccount, transfer.getPerformer());
 		assertEquals(moneyToTransfer, transfer.getAmount(), epsilon);
-		assertEquals(recipient, transfer.getRecipient());
+		assertEquals(recipient, transfer.getRecipientIdNumber());
 
 		Transfer recipientTranscaction = (Transfer) recipient.getTransactionsHistory().get(1);
 		assertEquals(TransactionType.TRANSFER, recipientTranscaction.getType());
 		assertEquals(savingsAccount, recipientTranscaction.getPerformer());
 		assertEquals(moneyToTransfer, recipientTranscaction.getAmount(), epsilon);
-		assertEquals(recipient, recipientTranscaction.getRecipient());
+		assertEquals(recipient, recipientTranscaction.getRecipientIdNumber());
 
 		assertEquals(transfer, recipientTranscaction);
 	}

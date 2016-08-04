@@ -1,12 +1,9 @@
 package Transaction;
 
-import Account.Account;
-import Account.User;
-
 public class Withdraw extends Transaction {
 	
-	public Withdraw(User performingPerson, Account performer, double amount) {
-		super(TransactionType.WITHDRAW, performingPerson, performer, amount);
+	public Withdraw(String performingPersonId, long performingAccountId, double amount) {
+		super(TransactionType.WITHDRAW, performingPersonId, performingAccountId, amount);
 		comment = generateComment(); 
 	}
 
