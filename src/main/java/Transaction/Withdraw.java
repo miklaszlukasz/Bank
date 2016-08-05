@@ -1,8 +1,10 @@
 package Transaction;
 
+import java.math.BigDecimal;
+
 public class Withdraw extends Transaction {
 	
-	public Withdraw(String performingPersonId, long performingAccountId, double amount) {
+	public Withdraw(String performingPersonId, long performingAccountId, BigDecimal amount) {
 		super(TransactionType.WITHDRAW, performingPersonId, performingAccountId, amount);
 		comment = generateComment(); 
 	}

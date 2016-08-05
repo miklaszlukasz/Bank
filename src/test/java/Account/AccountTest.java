@@ -1,5 +1,7 @@
 package Account;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 import Transaction.Transaction;
@@ -8,7 +10,6 @@ import Transaction.Transfer;
 import junit.framework.TestCase;
 
 public class AccountTest extends TestCase {
-	private final double epsilon = 0.0;
 	private User owner;
 	private Account account;
 
@@ -18,12 +19,12 @@ public class AccountTest extends TestCase {
 		owner = new User.Builder(randomPersonIdNumber, password).build();
 		account = new Account(owner);
 		owner.addAccount(account);
-		checkAccount(account, 0);
+		checkAccount(account, new BigDecimal(0));
 	}
 	
 	@Test
 	public void testDeposit() {
-		double moneyInTransaction = 1000.63;
+		BigDecimal moneyInTransaction = new BigDecimal(1000.63);
 		account.depositMoney(moneyInTransaction);
 		checkAccount(account, moneyInTransaction);		
 		checkTransaction(account.getTransactionsHistory().get(0), TransactionType.DEPOSIT, moneyInTransaction);
@@ -31,51 +32,51 @@ public class AccountTest extends TestCase {
 	
 	@Test
 	public void testWithdraw() {
-		double moneyInTransaction = 666.66;
+		BigDecimal moneyInTransaction = new BigDecimal(666.66);
 		account.withdrawMoney(moneyInTransaction);
-		checkAccount(account, -moneyInTransaction);
+		checkAccount(account, moneyInTransaction.negate());
 		checkTransaction(account.getTransactionsHistory().get(0), TransactionType.WITHDRAW, moneyInTransaction);
 
 	}
 	
-	private void checkAccount(Account account, double moneyInTransaction) {
-		assertEquals(moneyInTransaction, account.getMoney(), epsilon);
+	private void checkAccount(Account account, BigDecimal moneyInTransaction) {
+		assertEquals(moneyInTransaction, account.getMoney());
 	}
 	
-	private void checkTransaction(Transaction transaction, TransactionType transactionType, double moneyInTransaction) {
+	private void checkTransaction(Transaction transaction, TransactionType transactionType, BigDecimal moneyInTransaction) {
 		assertEquals(transactionType, transaction.getType());
 		assertEquals(account.getIdNumber(), transaction.getPerformer());
-		assertEquals(moneyInTransaction, transaction.getAmount(), epsilon);
+		assertEquals(moneyInTransaction, transaction.getAmount());
 	}
 	
 	@Test
 	public void testTransfer() {
-		double moneyOnAccount = 452.73;
+		BigDecimal moneyOnAccount = new BigDecimal(452.73);
 		account.depositMoney(moneyOnAccount);
 		checkAccount(account, moneyOnAccount);		
 		
 		User recipientOwner = new User.Builder("22021100178", "testowy").build();
 		Account recipient = new Account(recipientOwner);
-		double moneyOnRecipient = 23.13;
+		BigDecimal moneyOnRecipient = new BigDecimal(23.13);
 		recipient.depositMoney(moneyOnRecipient);
 		checkAccount(recipient, moneyOnRecipient);
 		
 		doTransfer(account, moneyOnAccount, recipient, moneyOnRecipient);
 		}
 	
-	private void doTransfer(Account performer, double monetOnPerformer, Account recipient, double moneyOnRecipient) {
-		double moneyToTransfer = 333.33;
+	private void doTransfer(Account performer, BigDecimal monetOnPerformer, Account recipient, BigDecimal moneyOnRecipient) {
+		BigDecimal moneyToTransfer = new BigDecimal(333.33);
 		account.transferMoney(recipient, moneyToTransfer, "test");
-		checkAccount(account, monetOnPerformer-moneyToTransfer);
-		checkAccount(recipient, moneyOnRecipient+moneyToTransfer);
+		checkAccount(account, monetOnPerformer.subtract(moneyToTransfer));
+		checkAccount(recipient, moneyOnRecipient.add(moneyToTransfer));
 		checkTransfer((Transfer) account.getTransactionsHistory().get(1), moneyToTransfer);
 		checkTransfer((Transfer) recipient.getTransactionsHistory().get(1), moneyToTransfer);
 	}
 	
-	private void checkTransfer(Transaction transaction, double moneyOnTransaction) {
+	private void checkTransfer(Transaction transaction, BigDecimal moneyOnTransaction) {
 		assertEquals(TransactionType.TRANSFER, transaction.getType());
 		assertEquals(account.getIdNumber(), transaction.getPerformer());
-		assertEquals(moneyOnTransaction, transaction.getAmount(), epsilon);
+		assertEquals(moneyOnTransaction, transaction.getAmount());
 		assertEquals(transaction.getIdNumber(), ((Transfer) transaction).getRecipientIdNumber());
 	}
 }

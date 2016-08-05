@@ -1,5 +1,6 @@
 package Account;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,13 +15,14 @@ public class Account {
 	private long accountIdNumber;
 	protected User owner;
 	private Date creationDate;
-	protected double money;
+	protected BigDecimal money;
 	private List<Transaction> transactionsHistory;
 
 	public Account(User owner) {
 		this.owner = owner;
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
+		money = new BigDecimal(0);
 	}
 	
 	public Account() {
@@ -28,32 +30,32 @@ public class Account {
 		creationDate = Calendar.getInstance().getTime();
 	}
 
-	public void depositMoney(double amount) {
+	public void depositMoney(BigDecimal amount) {
 		Transaction deposit = new Deposit(owner.getIdNumber(), this.getIdNumber(), amount);
 		transactionsHistory.add(deposit);
-		money += amount;
+		money = money.add(amount);
 	}
 
-	public void withdrawMoney(double amount) {
+	public void withdrawMoney(BigDecimal amount) {
 			Transaction withdraw = new Withdraw(owner.getIdNumber(), this.getIdNumber(), amount);
 			transactionsHistory.add(withdraw);
-			money -= amount;
+			money = money.subtract(amount);
 	}
 
-	public void transferMoney(Account recipient, double amount, String comment) {
+	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
 		Transaction transfer = new Transfer(owner.getIdNumber(), this.getIdNumber(), recipient.getIdNumber(), amount, comment);
 		withdrawMoney(amount, transfer);
 		recipient.depositMoney(amount, transfer);
 	}
 	
-	protected void depositMoney(double amount, Transaction transaction) {
+	protected void depositMoney(BigDecimal amount, Transaction transaction) {
 		transactionsHistory.add(transaction);
-		money += amount;
+		money = money.add(amount);
 	}
 
-	protected void withdrawMoney(double amount, Transaction transaction) {
+	protected void withdrawMoney(BigDecimal amount, Transaction transaction) {
 		transactionsHistory.add(transaction);
-		money -= amount;
+		money = money.subtract(amount);
 }
 	
 	public long getIdNumber() {
@@ -68,7 +70,7 @@ public class Account {
 		return creationDate;
 	}
 
-	public double getMoney() {
+	public BigDecimal getMoney() {
 		return money;
 	}
 

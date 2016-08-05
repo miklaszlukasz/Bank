@@ -1,5 +1,6 @@
 package Transaction;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,10 +10,10 @@ public abstract class Transaction {
 	protected String performingPersonId;
 	protected long performingAccountId;
 	protected Date executionDate;
-	protected double amount;
+	protected BigDecimal amount;
 	protected String comment;
 
-	public Transaction(TransactionType type, String performingPersonId, long performingAccountId, double amount) {
+	public Transaction(TransactionType type, String performingPersonId, long performingAccountId, BigDecimal amount) {
 		this.performingPersonId = performingPersonId;
 		this.type = type;
 		this.performingAccountId = performingAccountId;
@@ -40,7 +41,7 @@ public abstract class Transaction {
 		return executionDate;
 	}
 
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 	

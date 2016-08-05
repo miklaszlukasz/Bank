@@ -1,5 +1,7 @@
 package Transaction;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 import Account.Account;
@@ -7,7 +9,6 @@ import Account.User;
 import junit.framework.TestCase;
 
 public class DepositTest extends TestCase {
-	private final double epsilon = 0.0;
 	private User user;
 
 	public void setUp() {
@@ -20,9 +21,9 @@ public class DepositTest extends TestCase {
 
 	@Test
 	public void test() {
-		double amount = 2000.35;
+		BigDecimal amount = new BigDecimal(2000.35);
 		Account account = new Account(user);
 		Transaction deposit = new Deposit(user.getIdNumber(), account.getIdNumber(), amount);
-		assertEquals(amount, deposit.getAmount(), epsilon);
+		assertEquals(amount, deposit.getAmount());
 	}
 }

@@ -1,9 +1,11 @@
 package Transaction;
 
+import java.math.BigDecimal;
+
 public class Transfer extends Transaction {
 	private long recipientAccountId;
 
-	public Transfer(String performingPersonId, long performingAccountId, long recipientAccountId, double amount) {
+	public Transfer(String performingPersonId, long performingAccountId, long recipientAccountId, BigDecimal amount) {
 		super(TransactionType.TRANSFER, performingPersonId, performingAccountId, amount);
 		this.recipientAccountId = recipientAccountId;
 		comment = generateComment();
@@ -13,7 +15,7 @@ public class Transfer extends Transaction {
 		return "Transfer " + amount + " to " + recipientAccountId;
 	}
 	
-	public Transfer(String performingPerson, long performer, long recipientAccountId, double amount, String comment) {
+	public Transfer(String performingPerson, long performer, long recipientAccountId, BigDecimal amount, String comment) {
 		super(TransactionType.TRANSFER, performingPerson, performer, amount);
 		this.recipientAccountId = recipientAccountId;
 		this.comment = comment;
