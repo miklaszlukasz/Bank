@@ -60,14 +60,17 @@ public class AccountTest extends TestCase {
 		recipient.depositMoney(moneyOnRecipient);
 		checkAccount(recipient, moneyOnRecipient);
 		
+		doTransfer(account, moneyOnAccount, recipient, moneyOnRecipient);
+		}
+	
+	private void doTransfer(Account performer, double monetOnPerformer, Account recipient, double moneyOnRecipient) {
 		double moneyToTransfer = 333.33;
 		account.transferMoney(recipient, moneyToTransfer, "test");
-		checkAccount(account, moneyOnAccount-moneyToTransfer);
+		checkAccount(account, monetOnPerformer-moneyToTransfer);
 		checkAccount(recipient, moneyOnRecipient+moneyToTransfer);
-		
 		checkTransfer((Transfer) account.getTransactionsHistory().get(1), moneyToTransfer);
 		checkTransfer((Transfer) recipient.getTransactionsHistory().get(1), moneyToTransfer);
-		}
+	}
 	
 	private void checkTransfer(Transaction transaction, double moneyOnTransaction) {
 		assertEquals(TransactionType.TRANSFER, transaction.getType());
