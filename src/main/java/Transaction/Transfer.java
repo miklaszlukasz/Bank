@@ -24,28 +24,4 @@ public class Transfer extends Transaction {
 	public long getRecipientIdNumber() {
 		return recipientAccountId;
 	}
-	
-//	@Override
-//	public boolean equals(Object object) {
-//		if (object == null)
-//			return false;
-//	    if (!Transaction.class.isAssignableFrom(object.getClass()))
-//	        return false;
-//	    final Transfer transaction= (Transfer) object;
-////	    if (idNumber =! transaction.idNumber)
-////	    	return false;
-//	    if (!type.equals(transaction.type))
-//	    	return false;
-//	    if (!performingAccount.equals(transaction.performingAccount))
-//	    	return false;
-//	    if (!executionDate.equals(transaction.executionDate))
-//	    	return false;
-//	    if (amount != transaction.amount)
-//	    	return false;
-//	    if (!comment.equals(transaction.comment))
-//	    	return false;
-//	    if (recipient.equals(transaction.performingAccount))
-//	    	return false;
-//	    return true;
-//	}
 }
