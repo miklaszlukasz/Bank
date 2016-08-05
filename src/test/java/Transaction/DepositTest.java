@@ -4,26 +4,20 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import Account.Account;
-import Account.User;
 import junit.framework.TestCase;
 
 public class DepositTest extends TestCase {
-	private User user;
+	private String ownerId;
 
 	public void setUp() {
-		String randomPersonIdNumber = "76041019253";
-		String password = "test";
-		user = new User.Builder(randomPersonIdNumber, password).firstName("Jan").lastName("Kowalski")
-				.generateDateOfBirthFromIdNumber().build();
+		ownerId = "76041019253";
 	}
-	
 
 	@Test
 	public void test() {
 		BigDecimal amount = new BigDecimal(2000.35);
-		Account account = new Account(user);
-		Transaction deposit = new Deposit(user.getIdNumber(), account.getIdNumber(), amount);
+		long accountNumerId = 1234;
+		Transaction deposit = new Deposit(ownerId, accountNumerId, amount);
 		assertEquals(amount, deposit.getAmount());
 	}
 }

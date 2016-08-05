@@ -10,15 +10,11 @@ import Transaction.Transfer;
 import junit.framework.TestCase;
 
 public class AccountTest extends TestCase {
-	private User owner;
 	private Account account;
 
 	public void setUp() {
-		String randomPersonIdNumber = "22021100178";
-		String password = "test";
-		owner = new User.Builder(randomPersonIdNumber, password).build();
-		account = new Account(owner);
-		owner.addAccount(account);
+		String ownerIdNumber = "22021100178";
+		account = new Account(ownerIdNumber);
 		checkAccount(account, new BigDecimal(0));
 	}
 	
@@ -55,8 +51,8 @@ public class AccountTest extends TestCase {
 		account.depositMoney(moneyOnAccount);
 		checkAccount(account, moneyOnAccount);		
 		
-		User recipientOwner = new User.Builder("22021100178", "testowy").build();
-		Account recipient = new Account(recipientOwner);
+		String recipientOwnerId = "22021100178";
+		Account recipient = new Account(recipientOwnerId);
 		BigDecimal moneyOnRecipient = new BigDecimal(23.13);
 		recipient.depositMoney(moneyOnRecipient);
 		checkAccount(recipient, moneyOnRecipient);

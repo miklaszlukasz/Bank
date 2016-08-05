@@ -13,13 +13,13 @@ import Transaction.Withdraw;
 
 public class Account {
 	private long accountIdNumber;
-	protected User owner;
+	protected String ownerIdNumber;
 	private Date creationDate;
 	protected BigDecimal money;
 	private List<Transaction> transactionsHistory;
 
-	public Account(User owner) {
-		this.owner = owner;
+	public Account(String ownerIdNumber) {
+		this.ownerIdNumber = ownerIdNumber;
 		transactionsHistory = new ArrayList<Transaction>();
 		creationDate = Calendar.getInstance().getTime();
 		money = new BigDecimal(0);
@@ -31,19 +31,19 @@ public class Account {
 	}
 
 	public void depositMoney(BigDecimal amount) {
-		Transaction deposit = new Deposit(owner.getIdNumber(), this.getIdNumber(), amount);
+		Transaction deposit = new Deposit(ownerIdNumber, this.getIdNumber(), amount);
 		transactionsHistory.add(deposit);
 		money = money.add(amount);
 	}
 
 	public void withdrawMoney(BigDecimal amount) {
-			Transaction withdraw = new Withdraw(owner.getIdNumber(), this.getIdNumber(), amount);
+			Transaction withdraw = new Withdraw(ownerIdNumber, this.getIdNumber(), amount);
 			transactionsHistory.add(withdraw);
 			money = money.subtract(amount);
 	}
 
 	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
-		Transaction transfer = new Transfer(owner.getIdNumber(), this.getIdNumber(), recipient.getIdNumber(), amount, comment);
+		Transaction transfer = new Transfer(ownerIdNumber, this.getIdNumber(), recipient.getIdNumber(), amount, comment);
 		withdrawMoney(amount, transfer);
 		recipient.depositMoney(amount, transfer);
 	}
@@ -62,8 +62,8 @@ public class Account {
 		return accountIdNumber;
 	}
 	
-	public User getOwner() {
-		return owner;
+	public String getOwnerIdNumber() {
+		return ownerIdNumber;
 	}
 
 	public Date getCreationDate() {
