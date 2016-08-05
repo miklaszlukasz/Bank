@@ -29,7 +29,7 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void depositMoney(BigDecimal amount) {
-		depositMoney(new Deposit(ownerIdNumber, this.getIdNumber(), amount));
+		depositMoney(new Deposit(ownerIdNumber, accountIdNumber, amount));
 	}
 
 	private void depositMoney(Transaction transaction) {
@@ -38,7 +38,7 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void withdrawMoney(BigDecimal amount) {
-		withdrawMoney(new Withdraw(ownerIdNumber, this.getIdNumber(), amount));
+		withdrawMoney(new Withdraw(ownerIdNumber, accountIdNumber, amount));
 	}
 
 	private void withdrawMoney(Transaction transaction) {
@@ -47,14 +47,14 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
-		Transaction transfer = new Transfer(ownerIdNumber, this.getIdNumber(), recipient.getIdNumber(), amount,
+		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount,
 				comment);
 		withdrawMoney(transfer);
 		recipient.depositMoney(transfer);
 	}
 	
 	public void transferMoney(Account recipient, BigDecimal amount) {
-		Transaction transfer = new Transfer(ownerIdNumber, this.getIdNumber(), recipient.getIdNumber(), amount);
+		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount);
 		withdrawMoney(transfer);
 		recipient.depositMoney(transfer);
 	}
