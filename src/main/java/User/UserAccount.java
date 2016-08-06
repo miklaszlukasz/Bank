@@ -101,9 +101,10 @@ public class UserAccount {
 		}
 
 		private Date generateDateOfBirth(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
-			final int helper = monthOfBirth / 20;
-			monthOfBirth %= 20;
-			yearOfBirth += countYears(helper);
+			final int twentysAddedToMount = 20;
+			final int numbersTwenty = monthOfBirth / twentysAddedToMount;
+			monthOfBirth %= twentysAddedToMount;
+			yearOfBirth += countYears(numbersTwenty);
 
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			try {
@@ -113,17 +114,19 @@ public class UserAccount {
 			}
 		}
 
-		private int countYears(int helper) {
-			if (helper == 4)
+		private int countYears(int twentysAddedToMount) {
+			switch (twentysAddedToMount) {
+			case 4:
 				return 1800;
-			else if (helper == 3)
+			case 3:
 				return 2200;
-			else if (helper == 2)
+			case 2:
 				return 2100;
-			else if (helper == 1)
+			case 1:
 				return 2000;
-			else
+			default:
 				return 1900;
+			}
 		}
 
 		public UserAccount build() {
