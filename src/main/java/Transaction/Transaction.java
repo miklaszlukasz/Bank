@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-public abstract class Transaction {
+public class Transaction {
+
 	private TransactionType type;
 	private long idNumber;
 	private String performingPersonId;
@@ -13,18 +14,31 @@ public abstract class Transaction {
 	protected BigDecimal amount;
 	protected String comment;
 
-	public Transaction(TransactionType type, String performingPersonId, long performingAccountId, BigDecimal amount) {
+	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
+			BigDecimal amount) {
 		this.performingPersonId = performingPersonId;
-		this.type = type;
+		this.type = transactionType;
 		this.performingAccountId = performingAccountId;
 		this.amount = amount;
 		executionDate = Calendar.getInstance().getTime();
+		comment = generateComment(transactionType);
+	}
+
+	private String generateComment(TransactionType transactionType) {
+		switch (transactionType) {
+		case DEPOSIT:
+			return "Deposit to account: " + amount;
+		case WITHDRAW:
+			return "Withdraw from account: " + amount;
+		default:
+			return "";
+		}
 	}
 
 	public TransactionType getType() {
 		return type;
 	}
-	
+
 	public long getIdNumber() {
 		return idNumber;
 	}
@@ -44,10 +58,8 @@ public abstract class Transaction {
 	public BigDecimal getAmount() {
 		return amount;
 	}
-	
+
 	public String getComment() {
 		return comment;
 	}
-	
-	abstract String generateComment();
 }

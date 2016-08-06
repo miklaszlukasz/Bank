@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-public class UserTest extends TestCase {
-	private User user;
+public class UserAccountTest extends TestCase {
+	private UserAccount user;
 
 	public void setUp() {
 		String randomPersonIdNumber = "76041019253";
 		String password = "test";
-		user = new User.Builder(randomPersonIdNumber, password).firstName("Jan").lastName("Kowalski")
+		user = new UserAccount.Builder(randomPersonIdNumber, password).firstName("Jan").lastName("Kowalski")
 				.generateDateOfBirthFromIdNumber().build();
 	}
 

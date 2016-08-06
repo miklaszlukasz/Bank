@@ -17,7 +17,7 @@ public class WithdrawTest extends TestCase {
 	public void test() {
 		BigDecimal amount = new BigDecimal(2000.35);
 		long accountNumerId = 1234;
-		Transaction withdraw = new Withdraw(ownerId, accountNumerId, amount);
+		Transaction withdraw = new Transaction(TransactionType.WITHDRAW, ownerId, accountNumerId, amount);
 		assertEquals(amount, withdraw.getAmount());
 	}
 }

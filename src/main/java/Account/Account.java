@@ -9,10 +9,9 @@ import java.util.List;
 import Account.Interfaces.Depositable;
 import Account.Interfaces.Transferable;
 import Account.Interfaces.Withdrawable;
-import Transaction.Deposit;
 import Transaction.Transaction;
+import Transaction.TransactionType;
 import Transaction.Transfer;
-import Transaction.Withdraw;
 
 public class Account implements Depositable, Withdrawable, Transferable {
 	private long accountIdNumber;
@@ -29,7 +28,7 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void depositMoney(BigDecimal amount) {
-		depositMoney(new Deposit(ownerIdNumber, accountIdNumber, amount));
+		depositMoney(new Transaction(TransactionType.DEPOSIT, ownerIdNumber, accountIdNumber, amount));
 	}
 
 	private void depositMoney(Transaction transaction) {
@@ -38,7 +37,7 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void withdrawMoney(BigDecimal amount) {
-		withdrawMoney(new Withdraw(ownerIdNumber, accountIdNumber, amount));
+		withdrawMoney(new Transaction(TransactionType.WITHDRAW, ownerIdNumber, accountIdNumber, amount));
 	}
 
 	private void withdrawMoney(Transaction transaction) {

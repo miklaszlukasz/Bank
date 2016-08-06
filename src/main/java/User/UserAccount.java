@@ -8,7 +8,7 @@ import java.util.List;
 
 import Account.Account;
 
-public class User {
+public class UserAccount {
 	private String personalIdNumber;
 	private String password;
 	private String firstName;
@@ -16,7 +16,7 @@ public class User {
 	private Date dateOfBirth;
 	private List<Account> accounts;
 
-	public User(Builder builder) {
+	public UserAccount(Builder builder) {
 		personalIdNumber = builder.personalIdNumber;
 		password = builder.password;
 		firstName = builder.firstName;
@@ -126,8 +126,8 @@ public class User {
 				return 1900;
 		}
 
-		public User build() {
-			return new User(this);
+		public UserAccount build() {
+			return new UserAccount(this);
 		}
 	}
 }

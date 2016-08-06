@@ -17,7 +17,7 @@ public class DepositTest extends TestCase {
 	public void test() {
 		BigDecimal amount = new BigDecimal(2000.35);
 		long accountNumerId = 1234;
-		Transaction deposit = new Deposit(ownerId, accountNumerId, amount);
+		Transaction deposit = new Transaction(TransactionType.DEPOSIT, ownerId, accountNumerId, amount);
 		assertEquals(amount, deposit.getAmount());
 	}
 }
