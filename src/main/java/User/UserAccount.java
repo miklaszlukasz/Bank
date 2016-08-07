@@ -6,14 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import Account.Account;
 
+@Entity
 public class UserAccount {
+	@Id
 	private String personalIdNumber;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
+	@OneToMany(mappedBy = "user_account")
 	private List<Account> accounts;
 
 	public UserAccount(Builder builder) {

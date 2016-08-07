@@ -6,6 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import Account.Interfaces.Depositable;
 import Account.Interfaces.Transferable;
 import Account.Interfaces.Withdrawable;
@@ -13,11 +19,17 @@ import Transaction.Transaction;
 import Transaction.TransactionType;
 import Transaction.Transfer;
 
+@Entity
 public class Account implements Depositable, Withdrawable, Transferable {
+	@Id
+	@GeneratedValue
 	private long accountIdNumber;
-	protected String ownerIdNumber;
+	@ManyToOne
+	private String ownerIdNumber;
 	private Date creationDate;
 	protected BigDecimal money;
+
+	@OneToMany(mappedBy = "account")
 	private List<Transaction> transactionsHistory;
 
 	public Account(String ownerIdNumber) {
@@ -46,12 +58,11 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	}
 
 	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
-		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount,
-				comment);
+		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount, comment);
 		withdrawMoney(transfer);
 		recipient.depositMoney(transfer);
 	}
-	
+
 	public void transferMoney(Account recipient, BigDecimal amount) {
 		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount);
 		withdrawMoney(transfer);

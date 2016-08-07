@@ -4,11 +4,22 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Transaction {
 
 	private TransactionType type;
+	@Id
+	@GeneratedValue
 	private long idNumber;
-	private String performingPersonId;
+	@OneToOne
+	private String performingUserAccountId;
+	@ManyToOne
 	private long performingAccountId;
 	private Date executionDate;
 	protected BigDecimal amount;
@@ -16,7 +27,7 @@ public class Transaction {
 
 	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
 			BigDecimal amount) {
-		this.performingPersonId = performingPersonId;
+		this.performingUserAccountId = performingPersonId;
 		this.type = transactionType;
 		this.performingAccountId = performingAccountId;
 		this.amount = amount;
@@ -44,7 +55,7 @@ public class Transaction {
 	}
 
 	public String getPerformingPerson() {
-		return performingPersonId;
+		return performingUserAccountId;
 	}
 
 	public long getPerformer() {
