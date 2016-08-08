@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Transaction {
@@ -17,7 +16,7 @@ public class Transaction {
 	@Id
 	@GeneratedValue
 	private long idNumber;
-	@OneToOne
+	@ManyToOne
 	private String performingUserAccountId;
 	@ManyToOne
 	private long performingAccountId;
