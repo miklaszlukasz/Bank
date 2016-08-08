@@ -20,7 +20,7 @@ public class UserAccount {
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
-	@OneToMany(mappedBy = "user_account")
+	@OneToMany(mappedBy = "userAccount")
 	private List<Account> accounts;
 
 	public UserAccount(Builder builder) {

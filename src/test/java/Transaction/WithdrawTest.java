@@ -16,5 +16,4 @@ public class WithdrawTest extends TestCase {
 		Transaction withdraw = new Transaction(TransactionType.WITHDRAW, ownerId, accountNumerId, amount);
 		assertEquals(amount, withdraw.getAmount());
 	}
-
 }
