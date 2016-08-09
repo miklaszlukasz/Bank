@@ -88,4 +88,9 @@ public class Account implements Depositable, Withdrawable, Transferable {
 	public List<Transaction> getTransactionsHistory() {
 		return transactionsHistory;
 	}
+	
+	@Override
+	public String toString() {
+		return "Account number: " + accountIdNumber + "\t Money on account: " + money;
+	}
 }

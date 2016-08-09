@@ -1,5 +1,6 @@
 package User;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +31,20 @@ public class UserAccount {
 		lastName = builder.lastName;
 		dateOfBirth = builder.dateOfBirth;
 		accounts = new ArrayList<Account>();
+	}	
+
+	public void depositMoney(Account account, BigDecimal amount) {
+		account.depositMoney(amount);		
 	}
 
+	public void withdrawMoney(Account account, BigDecimal amount) {
+		account.withdrawMoney(amount);
+	}
+	
+	public void transferMoney(Account performer, Account recipient, BigDecimal amount, String comment) {
+		performer.transferMoney(recipient, amount, comment);
+	}
+	
 	public String getIdNumber() {
 		return personalIdNumber;
 	}

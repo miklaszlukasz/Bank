@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class DepositTest extends TestCase {
 
 	@Test
-	public void testDepositAndAddToDatabase() {
+	public void testDeposit() {
 		String ownerId = "76041019253";
 		long accountNumerId = 1234;
 		BigDecimal amount = new BigDecimal(2000.35);

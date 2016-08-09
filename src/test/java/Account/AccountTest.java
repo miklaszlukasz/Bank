@@ -57,10 +57,10 @@ public class AccountTest extends TestCase {
 		recipient.depositMoney(moneyOnRecipient);
 		checkAccount(recipient, moneyOnRecipient);
 		
-		doTransfer(account, moneyOnAccount, recipient, moneyOnRecipient);
+		doTransfer(moneyOnAccount, recipient, moneyOnRecipient);
 		}
 	
-	private void doTransfer(Account performer, BigDecimal monetOnPerformer, Account recipient, BigDecimal moneyOnRecipient) {
+	private void doTransfer(BigDecimal monetOnPerformer, Account recipient, BigDecimal moneyOnRecipient) {
 		BigDecimal moneyToTransfer = new BigDecimal(333.33);
 		account.transferMoney(recipient, moneyToTransfer, "test");
 		checkAccount(account, monetOnPerformer.subtract(moneyToTransfer));
