@@ -22,7 +22,6 @@ public class Transaction {
 	private long performingAccountId;
 	private Date executionDate;
 	protected BigDecimal amount;
-	protected String comment;
 
 	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
 			BigDecimal amount) {
@@ -31,28 +30,6 @@ public class Transaction {
 		this.performingAccountId = performingAccountId;
 		this.amount = amount;
 		executionDate = Calendar.getInstance().getTime();
-		comment = generateComment(transactionType);
-	}
-	
-	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
-			BigDecimal amount, String comment) {
-		this.performingUserAccountId = performingPersonId;
-		this.type = transactionType;
-		this.performingAccountId = performingAccountId;
-		this.amount = amount;
-		this.comment = comment;
-		executionDate = Calendar.getInstance().getTime();
-	}
-
-	private String generateComment(TransactionType transactionType) {
-		switch (transactionType) {
-		case DEPOSIT:
-			return "Deposit to account: " + amount;
-		case WITHDRAW:
-			return "Withdraw from account: " + amount;
-		default:
-			return "";
-		}
 	}
 
 	public TransactionType getType() {
@@ -77,9 +54,5 @@ public class Transaction {
 
 	public BigDecimal getAmount() {
 		return amount;
-	}
-
-	public String getComment() {
-		return comment;
 	}
 }
