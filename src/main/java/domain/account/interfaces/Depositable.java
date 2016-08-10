@@ -1,4 +1,4 @@
-package Account.Interfaces;
+package domain.account.interfaces;
 
 import java.math.BigDecimal;
 

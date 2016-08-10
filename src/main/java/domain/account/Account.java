@@ -1,4 +1,4 @@
-package Account;
+package domain.account;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,12 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import Account.Interfaces.Depositable;
-import Account.Interfaces.Transferable;
-import Account.Interfaces.Withdrawable;
-import Transaction.Transaction;
-import Transaction.TransactionType;
-import Transaction.Transfer;
+import domain.account.interfaces.Depositable;
+import domain.account.interfaces.Transferable;
+import domain.account.interfaces.Withdrawable;
+import domain.transaction.Transaction;
+import domain.transaction.TransactionType;
+import domain.transaction.Transfer;
 
 @Entity
 public class Account implements Depositable, Withdrawable, Transferable {

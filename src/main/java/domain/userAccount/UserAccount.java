@@ -1,4 +1,4 @@
-package User;
+package domain.userAccount;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import Account.Account;
+import domain.account.Account;
 
 @Entity
 public class UserAccount {
@@ -31,20 +31,24 @@ public class UserAccount {
 		lastName = builder.lastName;
 		dateOfBirth = builder.dateOfBirth;
 		accounts = new ArrayList<Account>();
-	}	
+	}
 
+	public boolean verify(String personalIdNumber, String password) {
+		return personalIdNumber.equals(this.personalIdNumber) && password.equals(this.password);
+	}
+	
 	public void depositMoney(Account account, BigDecimal amount) {
-		account.depositMoney(amount);		
+		account.depositMoney(amount);
 	}
 
 	public void withdrawMoney(Account account, BigDecimal amount) {
 		account.withdrawMoney(amount);
 	}
-	
+
 	public void transferMoney(Account performer, Account recipient, BigDecimal amount, String comment) {
 		performer.transferMoney(recipient, amount, comment);
 	}
-	
+
 	public String getIdNumber() {
 		return personalIdNumber;
 	}

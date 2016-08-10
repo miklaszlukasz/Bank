@@ -1,4 +1,4 @@
-package User;
+package domain.userAccount;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -6,22 +6,29 @@ import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
-import Account.Account;
-import Transaction.Transaction;
-import Transaction.TransactionType;
-import Transaction.Transfer;
+import domain.account.Account;
+import domain.transaction.Transaction;
+import domain.transaction.TransactionType;
+import domain.transaction.Transfer;
+import domain.userAccount.UserAccount;
 import junit.framework.TestCase;
 
 public class UserAccountTest extends TestCase {
 	private UserAccount userAccount;
-
+	String personalIdNumber;
+	String password;
 	public void setUp() {
-		String randomPersonIdNumber = "76041019253";
-		String password = "test";
-		userAccount = new UserAccount.Builder(randomPersonIdNumber, password).firstName("Jan").lastName("Kowalski")
+		personalIdNumber = "76041019253";
+		password = "test";
+		userAccount = new UserAccount.Builder(personalIdNumber, password).firstName("Jan").lastName("Kowalski")
 				.generateDateOfBirthFromIdNumber().build();
 	}
-
+	
+	@Test
+	public void testVerify() {
+		assertTrue(userAccount.verify(personalIdNumber, password));
+	}
+	
 	@Test
 	public void testConstructor() throws ParseException {
 		assertEquals("76041019253", userAccount.getIdNumber());

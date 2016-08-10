@@ -1,9 +1,11 @@
-package Transaction;
+package domain.transactions;
 
 import java.math.BigDecimal;
 
 import org.junit.Test;
 
+import domain.transaction.Transaction;
+import domain.transaction.TransactionType;
 import junit.framework.TestCase;
 
 public class WithdrawTest extends TestCase {

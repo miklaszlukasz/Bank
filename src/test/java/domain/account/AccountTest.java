@@ -1,12 +1,13 @@
-package Account;
+package domain.account;
 
 import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import Transaction.Transaction;
-import Transaction.TransactionType;
-import Transaction.Transfer;
+import domain.account.Account;
+import domain.transaction.Transaction;
+import domain.transaction.TransactionType;
+import domain.transaction.Transfer;
 import junit.framework.TestCase;
 
 public class AccountTest extends TestCase {

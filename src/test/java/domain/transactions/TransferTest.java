@@ -1,9 +1,10 @@
-package Transaction;
+package domain.transactions;
 
 import java.math.BigDecimal;
 
 import org.junit.Test;
 
+import domain.transaction.Transfer;
 import junit.framework.TestCase;
 
 public class TransferTest extends TestCase {

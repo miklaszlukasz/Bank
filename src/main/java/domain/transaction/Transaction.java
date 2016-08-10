@@ -1,4 +1,4 @@
-package Transaction;
+package domain.transaction;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -32,6 +32,16 @@ public class Transaction {
 		this.amount = amount;
 		executionDate = Calendar.getInstance().getTime();
 		comment = generateComment(transactionType);
+	}
+	
+	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
+			BigDecimal amount, String comment) {
+		this.performingUserAccountId = performingPersonId;
+		this.type = transactionType;
+		this.performingAccountId = performingAccountId;
+		this.amount = amount;
+		this.comment = comment;
+		executionDate = Calendar.getInstance().getTime();
 	}
 
 	private String generateComment(TransactionType transactionType) {
