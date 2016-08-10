@@ -26,7 +26,7 @@ public class UserAccountTest extends TestCase {
 	
 	@Test
 	public void testVerify() {
-		assertTrue(userAccount.verify(personalIdNumber, password));
+		assertTrue(userAccount.verifyIdNumberAndPassword(personalIdNumber, password));
 	}
 	
 	@Test

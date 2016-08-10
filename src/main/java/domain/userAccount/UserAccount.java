@@ -12,9 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import domain.account.Account;
+import domain.userAccount.interfaces.Depositable;
+import domain.userAccount.interfaces.Transferable;
+import domain.userAccount.interfaces.Verifable;
+import domain.userAccount.interfaces.Withdrawable;
 
 @Entity
-public class UserAccount {
+public class UserAccount implements Verifable, Depositable, Withdrawable, Transferable{
 	@Id
 	private String personalIdNumber;
 	private String password;
@@ -33,7 +37,7 @@ public class UserAccount {
 		accounts = new ArrayList<Account>();
 	}
 
-	public boolean verify(String personalIdNumber, String password) {
+	public boolean verifyIdNumberAndPassword(String personalIdNumber, String password) {
 		return personalIdNumber.equals(this.personalIdNumber) && password.equals(this.password);
 	}
 	
@@ -45,8 +49,12 @@ public class UserAccount {
 		account.withdrawMoney(amount);
 	}
 
-	public void transferMoney(Account performer, Account recipient, BigDecimal amount, String comment) {
-		performer.transferMoney(recipient, amount, comment);
+	public void transferMoney(Account account, Account recipient, BigDecimal amount, String comment) {
+		account.transferMoney(recipient, amount, comment);
+	}
+	
+	public void transferMoney(Account account, Account recipient, BigDecimal amount) {
+		account.transferMoney(recipient, amount);
 	}
 
 	public String getIdNumber() {
