@@ -2,31 +2,45 @@ package domain.transaction;
 
 import java.math.BigDecimal;
 
+import domain.account.Account;
+
 public class Transfer extends Transaction {
-	private long recipientAccountId;
+	private Account recipientAccount;
 	private String comment;
 
-	public Transfer(String performingPersonId, long performingAccountId, long recipientAccountId, BigDecimal amount) {
-		super(TransactionType.TRANSFER, performingPersonId, performingAccountId, amount);
-		this.recipientAccountId = recipientAccountId;
+	public Transfer(Account performingAccount, Account recipientAccount, BigDecimal amount) {
+		super(performingAccount, amount);
+		this.recipientAccount = recipientAccount;
 		comment = generateComment();
 	}
 
 	private String generateComment() {
-		return "Transfer " + amount + " to " + recipientAccountId;
+		return "Transfer " + amount + " to " + recipientAccount;
 	}
-	
-	public Transfer(String performingPersonId, long performingAccountId, long recipientAccountId, BigDecimal amount, String comment) {
-		super(TransactionType.TRANSFER, performingPersonId, performingAccountId, amount);
-		this.recipientAccountId = recipientAccountId;
+
+	public Transfer(Account performingAccount, Account recipientAccount, BigDecimal amount, String comment) {
+		super(performingAccount, amount);
+		this.recipientAccount = recipientAccount;
 		this.comment = comment;
 	}
 
-	public long getRecipientIdNumber() {
-		return recipientAccountId;
+	public Account getRecipientAccount() {
+		return recipientAccount;
 	}
 
 	public String getComment() {
 		return comment;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (!super.equals(object))
+			return false;
+		final Transfer transfer = (Transfer) object;
+		if (!recipientAccount.equals(transfer.getRecipientAccount()))
+			return false;
+		if (!comment.equals(transfer.getComment()))
+			return false;
+		return true;
 	}
 }

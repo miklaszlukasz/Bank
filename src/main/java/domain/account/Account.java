@@ -1,55 +1,58 @@
 package domain.account;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 import domain.account.interfaces.Depositable;
 import domain.account.interfaces.Transferable;
 import domain.account.interfaces.Withdrawable;
+import domain.transaction.Deposit;
 import domain.transaction.Transaction;
-import domain.transaction.TransactionType;
 import domain.transaction.Transfer;
+import domain.transaction.Withdraw;
+import domain.userAccount.UserAccount;
 
-@Entity
 public class Account implements Depositable, Withdrawable, Transferable {
-	@Id
-	@GeneratedValue
-	private long accountIdNumber;
-	@ManyToOne
-	private String ownerIdNumber;
+	private long idNumber;
+	private UserAccount owner;
 	private Date creationDate;
 	protected BigDecimal money;
 
-	@OneToMany(mappedBy = "account")
-	private List<Transaction> transactionsHistory;
+	private Set<Transaction> transactionsHistory;
 
-	public Account(String ownerIdNumber) {
-		this.ownerIdNumber = ownerIdNumber;
-		transactionsHistory = new ArrayList<Transaction>();
-		creationDate = Calendar.getInstance().getTime();
+	public Account(UserAccount owner) {
+		this.owner = owner;
+		transactionsHistory = new HashSet<Transaction>();
+		creationDate = new Date(Calendar.getInstance().getTimeInMillis());
 		money = new BigDecimal(0);
 	}
 
 	public void depositMoney(BigDecimal amount) {
-		depositMoney(new Transaction(TransactionType.DEPOSIT, ownerIdNumber, accountIdNumber, amount));
+		depositMoney(new Deposit(this, amount));
+	}
+	
+	public void withdrawMoney(BigDecimal amount) {
+		withdrawMoney(new Withdraw(this, amount));
 	}
 
+	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
+		Transaction transfer = new Transfer(this, recipient, amount, comment);
+		withdrawMoney(transfer);
+		recipient.depositMoney(transfer);
+	}
+
+	public void transferMoney(Account recipient, BigDecimal amount) {
+		Transaction transfer = new Transfer(this, recipient, amount);
+		withdrawMoney(transfer);
+		recipient.depositMoney(transfer);
+	}
+	
 	private void depositMoney(Transaction transaction) {
 		money = money.add(transaction.getAmount());
 		transactionsHistory.add(transaction);
-	}
-
-	public void withdrawMoney(BigDecimal amount) {
-		withdrawMoney(new Transaction(TransactionType.WITHDRAW, ownerIdNumber, accountIdNumber, amount));
 	}
 
 	private void withdrawMoney(Transaction transaction) {
@@ -57,24 +60,12 @@ public class Account implements Depositable, Withdrawable, Transferable {
 		transactionsHistory.add(transaction);
 	}
 
-	public void transferMoney(Account recipient, BigDecimal amount, String comment) {
-		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount, comment);
-		withdrawMoney(transfer);
-		recipient.depositMoney(transfer);
-	}
-
-	public void transferMoney(Account recipient, BigDecimal amount) {
-		Transaction transfer = new Transfer(ownerIdNumber, accountIdNumber, recipient.getIdNumber(), amount);
-		withdrawMoney(transfer);
-		recipient.depositMoney(transfer);
-	}
-
 	public long getIdNumber() {
-		return accountIdNumber;
+		return idNumber;
 	}
 
-	public String getOwnerIdNumber() {
-		return ownerIdNumber;
+	public UserAccount getOwner() {
+		return owner;
 	}
 
 	public Date getCreationDate() {
@@ -85,12 +76,34 @@ public class Account implements Depositable, Withdrawable, Transferable {
 		return money;
 	}
 
-	public List<Transaction> getTransactionsHistory() {
+	public Set<Transaction> getTransactionsHistory() {
 		return transactionsHistory;
 	}
-	
+
+	public boolean isGoodAccountIdNumber(long idNumber) {
+		return this.idNumber == idNumber;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (object == null)
+			return false;
+		if (getClass() != object.getClass())
+			return false;
+		final Account account = (Account) object;
+		if (idNumber != account.idNumber)
+			return false;
+		if (!owner.equals(account.owner))
+			return false;
+		if (!creationDate.equals(account.creationDate))
+			return false;
+		if (!money.equals(account.money))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
-		return "Account number: " + accountIdNumber + "\t Money on account: " + money;
+		return "Account number: " + idNumber + "\t Money on account: " + money;
 	}
 }

@@ -1,15 +1,9 @@
 package domain.userAccount;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import domain.account.Account;
 import domain.userAccount.interfaces.Depositable;
@@ -17,19 +11,16 @@ import domain.userAccount.interfaces.Transferable;
 import domain.userAccount.interfaces.Verifable;
 import domain.userAccount.interfaces.Withdrawable;
 
-@Entity
-public class UserAccount implements Verifable, Depositable, Withdrawable, Transferable{
-	@Id
-	private String personalIdNumber;
+public class UserAccount implements Verifable, Depositable, Withdrawable, Transferable {
+	private String idNumber;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
-	@OneToMany(mappedBy = "userAccount")
 	private List<Account> accounts;
 
 	public UserAccount(Builder builder) {
-		personalIdNumber = builder.personalIdNumber;
+		idNumber = builder.IdNumber;
 		password = builder.password;
 		firstName = builder.firstName;
 		lastName = builder.lastName;
@@ -37,10 +28,10 @@ public class UserAccount implements Verifable, Depositable, Withdrawable, Transf
 		accounts = new ArrayList<Account>();
 	}
 
-	public boolean verifyIdNumberAndPassword(String personalIdNumber, String password) {
-		return personalIdNumber.equals(this.personalIdNumber) && password.equals(this.password);
+	public boolean verifyIdNumberAndPassword(String idNumber, String password) {
+		return idNumber.equals(this.idNumber) && password.equals(this.password);
 	}
-	
+
 	public void depositMoney(Account account, BigDecimal amount) {
 		account.depositMoney(amount);
 	}
@@ -52,13 +43,13 @@ public class UserAccount implements Verifable, Depositable, Withdrawable, Transf
 	public void transferMoney(Account account, Account recipient, BigDecimal amount, String comment) {
 		account.transferMoney(recipient, amount, comment);
 	}
-	
+
 	public void transferMoney(Account account, Account recipient, BigDecimal amount) {
 		account.transferMoney(recipient, amount);
 	}
 
 	public String getIdNumber() {
-		return personalIdNumber;
+		return idNumber;
 	}
 
 	public String getPassword() {
@@ -81,16 +72,39 @@ public class UserAccount implements Verifable, Depositable, Withdrawable, Transf
 		return dateOfBirth;
 	}
 
+	@Override
+	public boolean equals(Object object) {
+		if (object == null)
+			return false;
+		if (getClass() != object.getClass())
+			return false;
+		final UserAccount userAccount = (UserAccount) object;
+		if (!idNumber.equals(userAccount.idNumber))
+			return false;
+		if (!password.equals(userAccount.password))
+			return false;
+		if (!firstName.equals(userAccount.firstName))
+			return false;
+		if (!lastName.equals(userAccount.lastName))
+			return false;
+		if (!dateOfBirth.equals(userAccount.dateOfBirth))
+			return false;
+		return true;
+	}
+
 	public static class Builder {
-		private String personalIdNumber;
+		private String IdNumber;
 		private String password;
 		private String firstName;
 		private String lastName;
 		private Date dateOfBirth;
 
 		public Builder(String personalIdNumber, String password) {
-			this.personalIdNumber = personalIdNumber;
+			this.IdNumber = personalIdNumber;
 			this.password = password;
+			firstName = "";
+			lastName = "";
+			dateOfBirth = new Date(0);
 		}
 
 		public Builder firstName(String firstName) {
@@ -109,7 +123,7 @@ public class UserAccount implements Verifable, Depositable, Withdrawable, Transf
 		}
 
 		public Builder generateDateOfBirthFromIdNumber() {
-			dateOfBirth = generateDateOfBirth(personalIdNumber);
+			dateOfBirth = generateDateOfBirth(IdNumber);
 			return this;
 		}
 
@@ -137,13 +151,8 @@ public class UserAccount implements Verifable, Depositable, Withdrawable, Transf
 			final int numbersTwenty = monthOfBirth / twentysAddedToMount;
 			monthOfBirth %= twentysAddedToMount;
 			yearOfBirth += countYears(numbersTwenty);
-
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			try {
-				return formatter.parse(dayOfBirth + "/" + monthOfBirth + "/" + yearOfBirth);
-			} catch (ParseException e) {
-				return null;
-			}
+			final String date = yearOfBirth + "-" + monthOfBirth + "-" + dayOfBirth;
+			return Date.valueOf(date);
 		}
 
 		private int countYears(int twentysAddedToMount) {

@@ -6,74 +6,68 @@ import org.junit.Test;
 
 import domain.account.Account;
 import domain.transaction.Transaction;
-import domain.transaction.TransactionType;
 import domain.transaction.Transfer;
+import domain.userAccount.UserAccount;
 import junit.framework.TestCase;
 
 public class AccountTest extends TestCase {
+	private UserAccount owner;
 	private Account account;
 
-	public void setUp() {
-		String ownerIdNumber = "22021100178";
-		account = new Account(ownerIdNumber);
-		checkAccount(account, new BigDecimal(0));
-	}
-	
-	@Test
-	public void testDeposit() {
-		BigDecimal moneyInTransaction = new BigDecimal(1000.63);
-		account.depositMoney(moneyInTransaction);
-		checkAccount(account, moneyInTransaction);		
-		checkTransaction(account.getTransactionsHistory().get(0), TransactionType.DEPOSIT, moneyInTransaction);
-	}
-	
-	@Test
-	public void testWithdraw() {
-		BigDecimal moneyInTransaction = new BigDecimal(666.66);
-		account.withdrawMoney(moneyInTransaction);
-		checkAccount(account, moneyInTransaction.negate());
-		checkTransaction(account.getTransactionsHistory().get(0), TransactionType.WITHDRAW, moneyInTransaction);
 
-	}
-	
-	private void checkAccount(Account account, BigDecimal moneyInTransaction) {
-		assertEquals(moneyInTransaction, account.getMoney());
-	}
-	
-	private void checkTransaction(Transaction transaction, TransactionType transactionType, BigDecimal moneyInTransaction) {
-		assertEquals(transactionType, transaction.getType());
-		assertEquals(account.getIdNumber(), transaction.getPerformer());
-		assertEquals(moneyInTransaction, transaction.getAmount());
-	}
-	
-	@Test
-	public void testTransfer() {
-		BigDecimal moneyOnAccount = new BigDecimal(452.73);
-		account.depositMoney(moneyOnAccount);
-		checkAccount(account, moneyOnAccount);		
-		
-		String recipientOwnerId = "22021100178";
-		Account recipient = new Account(recipientOwnerId);
-		BigDecimal moneyOnRecipient = new BigDecimal(23.13);
-		recipient.depositMoney(moneyOnRecipient);
-		checkAccount(recipient, moneyOnRecipient);
-		
-		doTransfer(moneyOnAccount, recipient, moneyOnRecipient);
+		public void setUp() {
+			String ownerIdNumber = "22021100178";
+			String password = "test";
+			owner = new UserAccount.Builder(ownerIdNumber, password).build();
+			account = new Account(owner);
+			checkAccount(account, new BigDecimal(0));
 		}
-	
-	private void doTransfer(BigDecimal monetOnPerformer, Account recipient, BigDecimal moneyOnRecipient) {
-		BigDecimal moneyToTransfer = new BigDecimal(333.33);
-		account.transferMoney(recipient, moneyToTransfer, "test");
-		checkAccount(account, monetOnPerformer.subtract(moneyToTransfer));
-		checkAccount(recipient, moneyOnRecipient.add(moneyToTransfer));
-		checkTransfer((Transfer) account.getTransactionsHistory().get(1), moneyToTransfer);
-		checkTransfer((Transfer) recipient.getTransactionsHistory().get(1), moneyToTransfer);
-	}
-	
-	private void checkTransfer(Transaction transaction, BigDecimal moneyOnTransaction) {
-		assertEquals(TransactionType.TRANSFER, transaction.getType());
-		assertEquals(account.getIdNumber(), transaction.getPerformer());
-		assertEquals(moneyOnTransaction, transaction.getAmount());
-		assertEquals(transaction.getIdNumber(), ((Transfer) transaction).getRecipientIdNumber());
-	}
+		
+		@Test
+		public void testIsGoodAccountIdNumber() {
+			assertTrue(account.isGoodAccountIdNumber(account.getIdNumber()));
+		}
+		
+		@Test
+		public void testDeposit() {
+			BigDecimal moneyInTransaction = new BigDecimal(1000.63);
+			account.depositMoney(moneyInTransaction);
+			checkAccount(account, moneyInTransaction);		
+			checkTransaction(account.getTransactionsHistory().iterator().next(), moneyInTransaction);
+		}
+		
+		@Test
+		public void testWithdraw() {
+			BigDecimal moneyInTransaction = new BigDecimal(666.66);
+			account.withdrawMoney(moneyInTransaction);
+			checkAccount(account, moneyInTransaction.negate());
+			checkTransaction(account.getTransactionsHistory().iterator().next(), moneyInTransaction);
+		}
+		
+		private void checkAccount(Account account, BigDecimal moneyInTransaction) {
+			assertEquals(moneyInTransaction, account.getMoney());
+		}
+		
+		private void checkTransaction(Transaction transaction, BigDecimal moneyInTransaction) {
+			assertEquals(account, transaction.getPerformingAccount());
+			assertEquals(moneyInTransaction, transaction.getAmount());
+		}
+		
+		@Test
+		public void testTransfer() {		
+			Account recipient = new Account(owner);
+			
+			BigDecimal moneyToTransfer = new BigDecimal(333.33);
+			account.transferMoney(recipient, moneyToTransfer, "test");
+			checkAccount(account, moneyToTransfer.negate());
+			checkAccount(recipient, moneyToTransfer);
+			checkTransfer(recipient, (Transfer) account.getTransactionsHistory().iterator().next(), moneyToTransfer);
+			checkTransfer(recipient, (Transfer) recipient.getTransactionsHistory().iterator().next(), moneyToTransfer);
+			}
+		
+		private void checkTransfer(Account recipient, Transaction transaction, BigDecimal moneyOnTransaction) {
+			assertEquals(account, transaction.getPerformingAccount());
+			assertEquals(moneyOnTransaction, transaction.getAmount());
+			assertEquals(recipient, ((Transfer) transaction).getRecipientAccount());
+		}
 }

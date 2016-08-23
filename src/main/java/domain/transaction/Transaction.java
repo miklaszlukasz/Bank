@@ -4,48 +4,28 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import domain.account.Account;
 
-@Entity
-public class Transaction {
+public abstract class Transaction {
 
-	private TransactionType type;
-	@Id
-	@GeneratedValue
 	private long idNumber;
-	@ManyToOne
-	private String performingUserAccountId;
-	@ManyToOne
-	private long performingAccountId;
+	private Account performingAccount;
 	private Date executionDate;
 	protected BigDecimal amount;
 
-	public Transaction(TransactionType transactionType, String performingPersonId, long performingAccountId,
+	public Transaction(Account performingAccount,
 			BigDecimal amount) {
-		this.performingUserAccountId = performingPersonId;
-		this.type = transactionType;
-		this.performingAccountId = performingAccountId;
+		this.performingAccount = performingAccount;
 		this.amount = amount;
 		executionDate = Calendar.getInstance().getTime();
-	}
-
-	public TransactionType getType() {
-		return type;
 	}
 
 	public long getIdNumber() {
 		return idNumber;
 	}
 
-	public String getPerformingPerson() {
-		return performingUserAccountId;
-	}
-
-	public long getPerformer() {
-		return performingAccountId;
+	public Account getPerformingAccount() {
+		return performingAccount;
 	}
 
 	public Date getExecutionDate() {
@@ -54,5 +34,23 @@ public class Transaction {
 
 	public BigDecimal getAmount() {
 		return amount;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (object == null)
+			return false;
+	    if (!Transaction.class.isAssignableFrom(object.getClass()))
+	        return false;
+	    final Transaction transaction = (Transaction) object;
+	    if (this.idNumber != transaction.idNumber)
+	    	return false;
+	    if (!this.performingAccount.equals(transaction.performingAccount))
+	    	return false;
+	    if (!this.executionDate.equals(transaction.executionDate))
+	    	return false;
+	    if (!this.amount.equals(transaction.amount))
+	    	return false;
+		return true;
 	}
 }
